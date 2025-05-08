@@ -168,8 +168,30 @@ class ScanningActivity : AppCompatActivity() {
         })
         mViewPager.currentItem = config.scanType
         scanType = config.scanType
-        findViewById<FrameLayout>(R.id.layoutBottom).setOnTouchListener { view, motionEvent ->
-            mViewPager.onTouchEvent(motionEvent)
+        
+        val layoutBottom = findViewById<FrameLayout>(R.id.layoutBottom)
+        layoutBottom.post {
+            val leftView = View(this)
+            leftView.layoutParams = FrameLayout.LayoutParams(
+                layoutBottom.width / 2,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
+            leftView.setOnClickListener {
+                mViewPager.currentItem = 0
+            }
+            
+            val rightView = View(this)
+            rightView.layoutParams = FrameLayout.LayoutParams(
+                layoutBottom.width / 2,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                leftMargin = layoutBottom.width / 2
+            }
+            rightView.setOnClickListener {
+                mViewPager.currentItem = 1
+            }
+            layoutBottom.addView(leftView)
+            layoutBottom.addView(rightView)
         }
     }
 
